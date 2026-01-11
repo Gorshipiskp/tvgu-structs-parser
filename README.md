@@ -89,14 +89,14 @@ pip install aiohttp beautifulsoup4
 ## В виде CLI-утилиты
 
 ```bash
-python main.py
+python -m tvgu_structs_parser
 ```
 В этом режиме данные загружаются, но никуда не сохраняются: бесполезно
 
 ## Экспорт факультетов и институтов в файл
 
 ```bash
-python main.py --output teachers.json --prettify
+python -m tvgu_structs_parser --output teachers.json --prettify
 ```
 `--output structs.json` – Файл для экспорта в JSON формате
 
@@ -106,13 +106,13 @@ python main.py --output teachers.json --prettify
 
 ## Автоматическое имя файла
 ```bash
-python main.py --output-auto --output-directory data
+python -m tvgu_structs_parser --output-auto --output-directory data
 ```
 
 В этом случае название файла будет иметь такой вид: `structs-YYYY-MM-DD.json` и находиться он будет в папке `data`
 
 ## Используя функцию
-В `main.py` есть функция `get_all_tvgu_structs` – просто вызывайте её _(не забудьте `await`)_ и получите список всех структур ТвГУ
+Используйте функцию `get_all_tvgu_structs()` – просто вызывайте её _(не забудьте `await`)_ и получите список всех структур ТвГУ
 
 Формат возвращаемого значения: `list[TvGUStruct]` – список датаклассов с описанием факультета или института
 
