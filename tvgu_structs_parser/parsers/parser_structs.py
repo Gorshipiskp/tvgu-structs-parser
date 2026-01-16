@@ -39,6 +39,23 @@ class DepartmentBase:
     phones: Optional[list[str]]
     phones_additional_codes: Optional[list[str]]
 
+    def _identify(self) -> tuple[str, str, str, str, str]:
+        return (
+            self.name,
+            self.boss_name,
+            self.email,
+            self.address,
+            self.postal_code
+        )
+
+    def __hash__(self) -> int:
+        return hash(self._identify())
+
+    def __eq__(self, other) -> bool:
+        if isinstance(other, TvGUStructBase):
+            return self._identify() == other._identify()
+        return NotImplemented
+
 
 @dataclass(frozen=True, kw_only=True)
 class Department(DepartmentBase):
