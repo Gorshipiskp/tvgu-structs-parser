@@ -7,7 +7,7 @@ from pathlib import Path
 from typing import Optional
 
 from .parser import get_all_tvgu_structs
-from .aggregate import TvGUStruct
+from .normalizer import TvGUStruct
 from .misc import CustomEncoder
 
 
@@ -33,7 +33,7 @@ def dump_structs(structs: list[TvGUStruct], output_path: str, prettify: bool) ->
 async def main(args: Args) -> None:
     final_structs: list[TvGUStruct] = await get_all_tvgu_structs(args.show_warnings)
 
-    if args.output is not None or args.output_auto:
+    if args.output is not None or args.output_auto is not None:
         if args.output_auto is not None:
             output_path: str = f"structs-{date.today()}.json"
         else:

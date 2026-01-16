@@ -19,7 +19,7 @@ def split_n_clean(text: str, *splitters: str) -> list[str]:
     else:
         splitted = [text]
 
-    return list(filter(lambda x: x, (truly_capitalize(job.strip()) for job in splitted)))
+    return list(filter(lambda x: x, (truly_capitalize(job.strip().strip("/")) for job in splitted)))
 
 
 def parse_name(name_l: str) -> str:
@@ -53,7 +53,7 @@ def parse_address(address_l: str) -> dict:
     return postal_code.strip(), address_l.strip()
 
 
-#  Бывают кнопки "Показать", если текста много, так что вытягиваем из модалки инфу
+# Бывают кнопки "Показать", если текста много, так что вытягиваем из модалки инфу
 def handle_possible_modal(tag: Tag, *splitters: str) -> list[str]:
     modal_container: Optional[Tag] = tag.find(class_="showpart-container-modal")
 

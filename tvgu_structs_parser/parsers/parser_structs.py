@@ -163,7 +163,7 @@ def parse_departments(departments_table_body: Tag) -> list[Department]:
 
         division_clause_tag: Tag = department.find(itemprop="divisionClauseDocLink")
 
-        #  Положение
+        # Положение
         if division_clause_tag.text.strip().lower() == "нет":
             division_clause_url = None
         else:

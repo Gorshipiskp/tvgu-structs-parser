@@ -1,6 +1,6 @@
 import asyncio
 
-from .aggregate import aggregate_structs, TvGUStruct
+from .normalizer import normalize_structs, TvGUStruct
 from .parsers.parser_all_groups import StructInfoGroups, parse_all_groups
 from .parsers.parser_structs import Department, StructInfo, parse_structs_page
 from .parsers.parser_structs_api import StructInfoAPI, parser_structs_api
@@ -51,7 +51,7 @@ async def get_all_tvgu_structs(show_warnings: bool = False) -> list[TvGUStruct]:
 
         raise ValueError("Несовпадение множества названий структур в расписаниях")
 
-    return aggregate_structs(
+    return normalize_structs(
         departments,
         structs,
         structs_tversu,

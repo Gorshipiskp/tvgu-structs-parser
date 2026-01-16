@@ -53,7 +53,7 @@ class TvGUStruct(TvGUStructBase):
     groups: list[str]
 
 
-def aggregate_structs(
+def normalize_structs(
         departments: list[Department],
         structs: list[StructInfo],
         structs_tversu: list[StructInfoTversu],
