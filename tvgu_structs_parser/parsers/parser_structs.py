@@ -52,7 +52,7 @@ class DepartmentBase:
         return hash(self._identify())
 
     def __eq__(self, other) -> bool:
-        if isinstance(other, TvGUStructBase):
+        if isinstance(other, DepartmentBase):
             return self._identify() == other._identify()
         return NotImplemented
 
