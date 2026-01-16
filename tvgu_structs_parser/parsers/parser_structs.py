@@ -25,9 +25,8 @@ class StructInfo:
 
 
 @dataclass(frozen=True, kw_only=True)
-class Department:
+class DepartmentBase:
     name: str
-    struct_name: str
     boss_name: Optional[str]
     boss_surname: Optional[str]
     boss_patronymic: Optional[str]
@@ -39,6 +38,11 @@ class Department:
     division_clause_url: Optional[str]
     phones: Optional[list[str]]
     phones_additional_codes: Optional[list[str]]
+
+
+@dataclass(frozen=True, kw_only=True)
+class Department(DepartmentBase):
+    struct_name: str
 
 
 def parse_structs(structs_table_body: Tag) -> list[StructInfo]:

@@ -10,7 +10,7 @@ from .parsers.parser_structs_tversu_page import StructInfoTversu
 
 
 @dataclass(frozen=True, kw_only=True)
-class TvGUStruct:
+class TvGUStructBase:
     name: str
     shortname: str
     description: str
@@ -26,6 +26,10 @@ class TvGUStruct:
     phones: Optional[list[str]]
     phones_additional_codes: Optional[list[str]]
     video_url: Optional[str]
+
+
+@dataclass(frozen=True, kw_only=True)
+class TvGUStruct(TvGUStructBase):
     departments: list[Department]
     groups: list[str]
 
