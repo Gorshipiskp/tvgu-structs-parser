@@ -42,7 +42,7 @@ class TvGUStructBase:
         return hash(self._identify())
 
     def __eq__(self, other) -> bool:
-        if isinstance(other, SubjectAggregated):
+        if isinstance(other, TvGUStructBase):
             return self._identify() == other._identify()
         return NotImplemented
 
