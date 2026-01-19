@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Optional, Literal, TypeAlias
+from typing import Optional, Literal, TypeAlias, Final
 
 from bs4 import Tag, BeautifulSoup
 
@@ -7,6 +7,8 @@ from ..misc import is_struct_skipping, parse_phones_n_additional_codes, parse_ad
     parse_teacher_name
 
 StructType: TypeAlias = Literal["faculty", "institute"]
+INSTITUTE_TYPE: Final[str] = "institute"
+FACULTY_TYPE: Final[str] = "faculty"
 
 
 @dataclass(frozen=True, kw_only=True)
