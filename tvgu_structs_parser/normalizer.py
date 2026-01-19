@@ -16,9 +16,6 @@ class TvGUStructBase:
     description: str
     code: str
     type: StructType
-    boss_name: Optional[str]
-    boss_surname: Optional[str]
-    boss_patronymic: Optional[str]
     address: Optional[str]
     postal_code: Optional[str]
     website: Optional[str]
@@ -51,6 +48,9 @@ class TvGUStructBase:
 class TvGUStruct(TvGUStructBase):
     departments: list[Department]
     groups: list[str]
+    boss_name: Optional[str]
+    boss_surname: Optional[str]
+    boss_patronymic: Optional[str]
 
 
 def normalize_structs(
