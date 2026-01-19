@@ -27,10 +27,6 @@ class StructInfo:
 @dataclass(frozen=True, kw_only=True)
 class DepartmentBase:
     name: str
-    boss_name: Optional[str]
-    boss_surname: Optional[str]
-    boss_patronymic: Optional[str]
-    boss_jobs: Optional[list[str]]
     address: Optional[str]
     postal_code: Optional[str]
     website: Optional[str]
@@ -42,7 +38,6 @@ class DepartmentBase:
     def _identify(self) -> tuple[str, str, str, str, str]:
         return (
             self.name,
-            self.boss_name,
             self.email,
             self.address,
             self.postal_code
@@ -60,6 +55,10 @@ class DepartmentBase:
 @dataclass(frozen=True, kw_only=True)
 class Department(DepartmentBase):
     struct_name: str
+    boss_jobs: Optional[list[str]]
+    boss_name: Optional[str]
+    boss_surname: Optional[str]
+    boss_patronymic: Optional[str]
 
 
 def parse_structs(structs_table_body: Tag) -> list[StructInfo]:
