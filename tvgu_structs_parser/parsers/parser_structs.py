@@ -74,7 +74,7 @@ def parse_structs(structs_table_body: Tag) -> list[StructInfo]:
         if is_struct_skipping(struct_name):
             continue
 
-        struct_type: StructType = "faculty" if "факультет" in struct_name.lower() else "institute"
+        struct_type: StructType = FACULTY_TYPE if "факультет" in struct_name.lower() else INSTITUTE_TYPE
 
         boss_name_tag: Tag = struct.find(itemprop="fio")
         boss_name: str = boss_name_tag.text.strip()
