@@ -94,7 +94,7 @@ def normalize_structs(
         struct_from_api: StructInfoAPI = struct_info["struct_from_api"]
         struct_from_groups: StructInfoGroups = struct_info["struct_from_groups"]
 
-        if USE_SHORTER_ADDRESSES or struct.address is None:
+        if struct.address is None:
             address: Optional[str] = struct_tversu.address
         else:
             address: str = struct.address

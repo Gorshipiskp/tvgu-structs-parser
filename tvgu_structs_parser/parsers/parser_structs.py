@@ -1,8 +1,10 @@
+import re
 from dataclasses import dataclass
 from typing import Optional, Literal, TypeAlias, Final
 
 from bs4 import Tag, BeautifulSoup
 
+from ..config import USE_SHORTER_ADDRESSES
 from ..misc import is_struct_skipping, parse_phones_n_additional_codes, parse_address_n_postal_code, split_n_clean, \
     parse_teacher_name
 
@@ -87,9 +89,14 @@ def parse_structs(structs_table_body: Tag) -> list[StructInfo]:
         address_str_n_postal_code_tag: Tag = struct.find(itemprop="addressStr")
         postal_code, address = parse_address_n_postal_code(address_str_n_postal_code_tag.text)
 
-        site_tag: Tag = struct.find(itemprop="site")
-        site_str: str = site_tag.text.strip()
-        website: Optional[str] = None if "нет" in site_str.lower() else site_str.strip("/")
+        if USE_SHORTER_ADDRESSES and address is not None:
+            address = re.sub("Центральный федеральный округ, Тверская область,", "", address,
+                             flags=re.IGNORECASE).strip()
+            address = re.sub("Тверская область,", "", address, flags=re.IGNORECASE).strip()
+
+        website_tag: Tag = struct.find(itemprop="site")
+        website_str: str = website_tag.text.strip()
+        website: Optional[str] = None if "нет" in website_str or "отсутствует" in website_str else website_str
 
         email_tag: Tag = struct.find(itemprop="email")
         email: str = email_tag.text.strip()
@@ -155,12 +162,18 @@ def parse_departments(departments_table_body: Tag) -> list[Department]:
         address_tag: Tag = department.find(itemprop="addressStr")
         postal_code, address = parse_address_n_postal_code(address_tag.text)
 
+        if USE_SHORTER_ADDRESSES:
+            address = re.sub("Центральный федеральный округ, Тверская область,", "", address,
+                             flags=re.IGNORECASE).strip()
+            address = re.sub("Тверская область,", "", address, flags=re.IGNORECASE).strip()
+
         website_tag: Tag = department.find(itemprop="site")
-        website_str: Optional[str] = website_tag.text.strip()
-        website: Optional[str] = None if "нет" in website_str.lower() else website_str.strip()
+        website_str: Optional[str] = website_tag.text.strip().lower()
+        website: Optional[str] = None if "нет" in website_str or "отсутствует" in website_str else website_str
 
         email_tag: Tag = department.find(itemprop="email")
         email: Optional[str] = email_tag.text.strip()
+        email = None if "нет" in email.lower() or "отсутствует" in email.lower() else email
 
         division_clause_tag: Tag = department.find(itemprop="divisionClauseDocLink")
 
