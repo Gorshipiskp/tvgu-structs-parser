@@ -17,6 +17,7 @@ NON_DIGITS_PATTERN: Final[re.Pattern] = re.compile(r"\D")
 USE_SHORTER_ADDRESSES: Final[bool] = True
 
 STRUCTS_TO_SKIP: Final[tuple[str, ...]] = (
+    # Иногда попадается в списках
     "Аспирантура",
     "Институт непрерывного образования",
     # Хз, что это, лучше пропустим: страница на сайте (https://doud.tversu.ru/) тоже пустая

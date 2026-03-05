@@ -1,6 +1,6 @@
 import json
 import re
-from typing import Optional
+from typing import Optional, Any
 
 from bs4 import Tag
 
@@ -46,7 +46,7 @@ def parse_email(email_l: str) -> str:
     return email_l.strip()
 
 
-def parse_address(address_l: str) -> dict:
+def parse_address(address_l: str) -> tuple[str, str]:
     address_l = address_l.replace("\xa0", " ").replace("\u00A0", " ").replace("Адрес:", "")
     postal_code, address_l = address_l.split(",", 1)
 
@@ -139,5 +139,5 @@ def is_struct_skipping(struct_name: str) -> bool:
 
 
 class CustomEncoder(json.JSONEncoder):
-    def default(self, obj):
+    def default(self, obj) -> dict[str, Any]:
         return obj.__dict__

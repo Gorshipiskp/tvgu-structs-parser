@@ -1,6 +1,6 @@
 from collections import defaultdict
 from dataclasses import dataclass
-from typing import Optional
+from typing import Optional, Any
 
 from ..config import ALL_GROUPS_API_URL
 from ..misc import is_struct_skipping
@@ -17,11 +17,11 @@ def get_struct_code_from_group_name(group_name: str) -> str:
     return group_name.split("-")[0].strip()
 
 
-def parse_all_groups(all_groups_response: list[dict[str, str]]):
+def parse_all_groups(all_groups_response: dict[str, list[dict[str, str]]]):
     if "groups" not in all_groups_response:
         raise ValueError(f"Неверный формат ответа от {ALL_GROUPS_API_URL}")
 
-    structs_groups: defaultdict[str, list[dict[str, str]]] = defaultdict(lambda: {"groups": [], "code": None})
+    structs_groups: defaultdict[str, dict[str, Any]] = defaultdict(lambda: {"groups": [], "code": None})
 
     for group in all_groups_response["groups"]:
         struct_name: Optional[str] = group.get("facultyName")

@@ -36,9 +36,12 @@ def parse_structs_tversu_page(structs_tversu_page: str) -> list[StructInfoTversu
         description_tag: Tag = cur_fac.find_next("p")
         description: str = parse_description(description_tag.text)
 
-        figure_tag: Tag = cur_fac.find_next("figure")
+        figure_tag: Optional[Tag] = cur_fac.find_next("figure")
 
-        video_url: Optional[str] = None if figure_tag is None else figure_tag.findChild("oembed").get("url")
+        if figure_tag is None:
+            video_url: None = None
+        else:
+            video_url: Optional[str] = figure_tag.findChild("oembed").get("url")  # noqa
 
         ul_tag: Tag = description_tag.find_next("ul")
 

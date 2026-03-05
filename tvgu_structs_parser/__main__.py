@@ -6,9 +6,9 @@ from datetime import date
 from pathlib import Path
 from typing import Optional
 
-from .parser import get_all_tvgu_structs
-from .normalizer import TvGUStruct
 from .misc import CustomEncoder
+from .normalizer import TvGUStruct
+from .parser import get_all_tvgu_structs
 
 
 @dataclass(frozen=True, kw_only=True)
@@ -42,7 +42,7 @@ async def main(args: Args) -> None:
         if args.output_directory is not None:
             directory: Path = Path(args.output_directory)
             directory.mkdir(parents=True, exist_ok=True)
-            output_path = directory / output_path
+            output_path: Path = directory / output_path
 
         dump_structs(final_structs, output_path, args.prettify)
     else:
@@ -73,9 +73,9 @@ def parse_args() -> Args:
 if __name__ == "__main__":
     # Python >=3.10
 
-    args: Args = parse_args()
+    cur_args: Args = parse_args()
 
-    if args.output is not None and args.output_auto is not None:
+    if cur_args.output is not None and cur_args.output_auto is not None:
         raise ValueError("Одновременно можно использовать параметр -o и -oa")
 
-    asyncio.run(main(args))
+    asyncio.run(main(cur_args))

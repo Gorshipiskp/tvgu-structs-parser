@@ -1,6 +1,6 @@
 import re
 from dataclasses import dataclass
-from typing import Optional, Literal, TypeAlias, Final
+from typing import Optional, Final, Any, Literal
 
 from bs4 import Tag, BeautifulSoup
 
@@ -8,9 +8,10 @@ from ..config import USE_SHORTER_ADDRESSES
 from ..misc import is_struct_skipping, parse_phones_n_additional_codes, parse_address_n_postal_code, split_n_clean, \
     parse_teacher_name
 
-StructType: TypeAlias = Literal["faculty", "institute"]
-INSTITUTE_TYPE: Final[str] = "institute"
-FACULTY_TYPE: Final[str] = "faculty"
+INSTITUTE_TYPE: Final = "institute"
+FACULTY_TYPE: Final = "faculty"
+
+StructType = Literal[INSTITUTE_TYPE, FACULTY_TYPE]
 
 
 @dataclass(frozen=True, kw_only=True)
@@ -39,7 +40,7 @@ class DepartmentBase:
     phones: Optional[list[str]]
     phones_additional_codes: Optional[list[str]]
 
-    def _identify(self) -> tuple[str, str, str, str, str]:
+    def _identify(self) -> tuple[str, str, str, str]:
         return (
             self.name,
             self.email,
@@ -82,7 +83,7 @@ def parse_structs(structs_table_body: Tag) -> list[StructInfo]:
         boss_name: str = boss_name_tag.text.strip()
 
         if boss_name.lower() == "нет" or "отсутствует" in boss_name.lower():
-            boss_name_parts: dict[str, str] = {"name": None, "surname": None, "patronymic": None}
+            boss_name_parts: dict[str, Optional[str]] = {"name": None, "surname": None, "patronymic": None}
         else:
             boss_name_parts: dict[str, str] = parse_teacher_name(boss_name)
 
@@ -146,7 +147,7 @@ def parse_departments(departments_table_body: Tag) -> list[Department]:
         department_boss: str = department_boss_tag.text.strip()
 
         if department_boss.lower() == "нет" or "отсутствует" in department_boss.lower():
-            boss_name_parts: dict[str, str] = {"name": None, "surname": None, "patronymic": None}
+            boss_name_parts: dict[str, Optional[str]] = {"name": None, "surname": None, "patronymic": None}
         else:
             boss_name_parts: dict[str, str] = parse_teacher_name(department_boss)
 
@@ -212,7 +213,7 @@ def parse_departments(departments_table_body: Tag) -> list[Department]:
     return departments
 
 
-def parse_structs_page(structs_page: str, show_warnings: bool = False) -> dict[str, str]:
+def parse_structs_page(structs_page: str, show_warnings: bool = False) -> dict[str, Any]:
     soup: BeautifulSoup = BeautifulSoup(structs_page, "html.parser")
 
     tbodies: list[Tag] = soup.find_all("tbody")
@@ -222,7 +223,7 @@ def parse_structs_page(structs_page: str, show_warnings: bool = False) -> dict[s
     if len(tbodies) != len(theaders):
         raise ValueError(f"Неопределённое количество таблиц: {len(tbodies)} != {len(theaders)}")
 
-    zipped: list[Tag, Tag] = list(zip(h4s, theaders, tbodies))
+    zipped: list[tuple[Tag, Tag, Tag]] = list(zip(h4s, theaders, tbodies))
 
     def get_next_table() -> tuple[str, Tag, Tag]:
         cur_h4, cur_head, cur_body = zipped.pop(0)

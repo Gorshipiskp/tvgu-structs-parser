@@ -40,7 +40,7 @@ async def get_all_tvgu_structs(show_warnings: bool = False) -> list[TvGUStruct]:
 
         all_names: set[str] = set.union(*all_sets.values())
 
-        missing: dict[str, str] = {
+        missing: dict[str, set[str]] = {
             name: all_names - values
             for name, values in all_sets.items()
         }

@@ -2,7 +2,6 @@ from collections import defaultdict
 from dataclasses import dataclass
 from typing import Optional
 
-from .config import USE_SHORTER_ADDRESSES
 from .parsers.parser_all_groups import StructInfoGroups
 from .parsers.parser_structs import Department, StructInfo, StructType
 from .parsers.parser_structs_api import StructInfoAPI
